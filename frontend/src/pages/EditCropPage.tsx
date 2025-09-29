@@ -3,12 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
 const CROP_TYPES = ['Carrot', 'Tomato', 'Lettuce', 'Cabbage']
-const VARIETIES: Record<string, string[]> = {
-  Carrot: ['Nantes', 'Imperator', 'Danvers'],
-  Tomato: ['Roma', 'Cherry', 'Beefsteak'],
-  Lettuce: ['Butterhead', 'Romaine', 'Iceberg'],
-  Cabbage: ['Green', 'Red', 'Savoy'],
-}
+// Removed varieties; using batch code and numeric fields instead
 
 export function EditCropPage() {
   const { cropId } = useParams()
@@ -17,10 +12,12 @@ export function EditCropPage() {
   const crop = crops.find((c) => c.id === cropId)
 
   const [type, setType] = useState(crop?.name ?? 'Carrot')
-  const [variety, setVariety] = useState(crop?.variety ?? '')
+  const [batchCode, setBatchCode] = useState(crop?.batchCode ?? '')
+  const [predictedYield, setPredictedYield] = useState<number>(crop?.predictedYield ?? 0)
+  const [numPlants, setNumPlants] = useState<number>(crop?.numPlants ?? 0)
   const [date, setDate] = useState(crop?.plantingDate ?? new Date().toISOString().slice(0, 10))
 
-  const varietyOptions = useMemo(() => VARIETIES[type] ?? [], [type])
+  const varietyOptions = useMemo(() => [], [type])
 
   if (!crop) {
     return (
@@ -36,7 +33,7 @@ export function EditCropPage() {
   function onSave(e: React.FormEvent) {
     e.preventDefault()
     if (!crop) return
-    updateCrop(crop.id, { name: type, variety, plantingDate: date })
+    updateCrop(crop.id, { name: type, batchCode, predictedYield, numPlants, plantingDate: date })
     navigate('/crops')
   }
 
@@ -51,11 +48,18 @@ export function EditCropPage() {
           </select>
         </div>
         <div className="field">
-          <label className="label">Variety</label>
-          <select className="select" value={variety} onChange={(e) => setVariety(e.target.value)}>
-            <option value="">Select variety</option>
-            {varietyOptions.map((v) => <option key={v} value={v}>{v}</option>)}
-          </select>
+          <label className="label">Batch code</label>
+          <input className="input" type="text" value={batchCode} onChange={(e) => setBatchCode(e.target.value)} />
+        </div>
+        <div className="row">
+          <div className="field col">
+            <label className="label">Predicted crop yield</label>
+            <input className="input" type="number" value={predictedYield} onChange={(e) => setPredictedYield(Number(e.target.value))} />
+          </div>
+          <div className="field col">
+            <label className="label">Number of plants</label>
+            <input className="input" type="number" value={numPlants} onChange={(e) => setNumPlants(Number(e.target.value))} />
+          </div>
         </div>
         <div className="field">
           <label className="label">Planting Date</label>

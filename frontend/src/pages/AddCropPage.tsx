@@ -1,28 +1,25 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
 const CROP_TYPES = ['Carrot', 'Tomato', 'Lettuce', 'Cabbage']
-const VARIETIES: Record<string, string[]> = {
-  Carrot: ['Nantes', 'Imperator', 'Danvers'],
-  Tomato: ['Roma', 'Cherry', 'Beefsteak'],
-  Lettuce: ['Butterhead', 'Romaine', 'Iceberg'],
-  Cabbage: ['Green', 'Red', 'Savoy'],
-}
+// Removed variety options; using batch code instead
 
 export function AddCropPage() {
   const { selectedTunnelId, selectedPlotId, addCrop } = useApp()
   const navigate = useNavigate()
   const [type, setType] = useState('Carrot')
-  const [variety, setVariety] = useState('')
+  const [batchCode, setBatchCode] = useState('')
+  const [predictedYield, setPredictedYield] = useState<number>(0)
+  const [numPlants, setNumPlants] = useState<number>(0)
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10))
 
-  const varietyOptions = useMemo(() => VARIETIES[type] ?? [], [type])
+  
 
   function onAdd(e: React.FormEvent) {
     e.preventDefault()
     if (!selectedTunnelId || !selectedPlotId) return
-    addCrop({ tunnelId: selectedTunnelId, plotId: selectedPlotId, name: type, variety, plantingDate: date })
+    addCrop({ tunnelId: selectedTunnelId, plotId: selectedPlotId, name: type, batchCode, plantingDate: date, predictedYield, numPlants })
     navigate('/crops')
   }
 
@@ -32,16 +29,23 @@ export function AddCropPage() {
       <form onSubmit={onAdd}>
         <div className="field">
           <label className="label">Crop Type</label>
-          <select className="select" value={type} onChange={(e) => { setType(e.target.value); setVariety('') }}>
+          <select className="select" value={type} onChange={(e) => { setType(e.target.value) }}>
             {CROP_TYPES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <div className="field">
-          <label className="label">Variety</label>
-          <select className="select" value={variety} onChange={(e) => setVariety(e.target.value)}>
-            <option value="">Select variety</option>
-            {varietyOptions.map((v) => <option key={v} value={v}>{v}</option>)}
-          </select>
+          <label className="label">Batch code</label>
+          <input className="input" type="text" value={batchCode} onChange={(e) => setBatchCode(e.target.value)} placeholder="Enter batch code" />
+        </div>
+        <div className="row">
+          <div className="field col">
+            <label className="label">Predicted crop yield(kg)</label>
+            <input className="input" type="number" value={predictedYield} onChange={(e) => setPredictedYield(Number(e.target.value))} placeholder="e.g., 120" />
+          </div>
+          <div className="field col">
+            <label className="label">Number of plants</label>
+            <input className="input" type="number" value={numPlants} onChange={(e) => setNumPlants(Number(e.target.value))} placeholder="e.g., 50" />
+          </div>
         </div>
         <div className="field">
           <label className="label">Planting Date</label>

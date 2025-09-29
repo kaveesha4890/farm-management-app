@@ -12,7 +12,7 @@ export function HarvestsPage() {
   return (
     <div className="card">
       <div className="row" style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <div className="page-title">Harvests {crop ? `- ${crop.name} / ${crop.variety}` : ''}</div>
+        <div className="page-title">Harvests {crop ? `- ${crop.name}` : ''}</div>
         <button className="btn small" onClick={() => navigate(`/crops/${crop?.id}/harvests/new`)} disabled={!crop}>Add Harvest</button>
       </div>
       <div className="spacer" />
@@ -21,17 +21,19 @@ export function HarvestsPage() {
           <tr>
             <th>Harvest date</th>
             <th>Quantity</th>
+            <th>Number of harvest plants</th>
             <th>Note</th>
           </tr>
         </thead>
         <tbody>
           {rows.length === 0 && (
-            <tr><td colSpan={3} className="muted">No harvests yet</td></tr>
+            <tr><td colSpan={4} className="muted">No harvests yet</td></tr>
           )}
           {rows.map((h) => (
             <tr key={h.id}>
               <td>{h.date}</td>
               <td>{h.quantity}</td>
+              <td>{h.numHarvestPlants}</td>
               <td>{h.note ?? '-'}</td>
             </tr>
           ))}

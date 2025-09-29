@@ -10,12 +10,13 @@ export function AddHarvestPage() {
 
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10))
   const [quantity, setQuantity] = useState<number>(0)
+  const [numHarvestPlants, setNumHarvestPlants] = useState<number>(0)
   const [note, setNote] = useState('')
 
   function onAdd(e: React.FormEvent) {
     e.preventDefault()
     if (!crop) return
-    addHarvest({ cropId: crop.id, date, quantity: Number(quantity), note: note || undefined })
+    addHarvest({ cropId: crop.id, date, quantity: Number(quantity), numHarvestPlants: Number(numHarvestPlants), note: note || undefined })
     navigate(`/crops/${crop.id}/harvests`)
   }
 
@@ -36,8 +37,12 @@ export function AddHarvestPage() {
           />
         </div>
         <div className="field">
-          <label className="label">Harvest Quantity</label>
+          <label className="label">Harvest Quantity(kg)</label>
           <input className="input" type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} />
+        </div>
+        <div className="field">
+          <label className="label">Number of Harvest plants</label>
+          <input className="input" type="number" value={numHarvestPlants} onChange={(e) => setNumHarvestPlants(Number(e.target.value))} />
         </div>
         <div className="field">
           <label className="label">Note (Optional)</label>

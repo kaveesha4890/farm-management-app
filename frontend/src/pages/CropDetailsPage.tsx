@@ -23,7 +23,9 @@ export function CropDetailsPage() {
         <thead>
           <tr>
             <th>Crop</th>
-            <th>Variety</th>
+            <th>Batch code</th>
+            <th>Predicted yield</th>
+            <th>Number of plants</th>
             <th>Planting date</th>
             <th>Status</th>
             <th>Actions</th>
@@ -38,7 +40,9 @@ export function CropDetailsPage() {
               <td>
                 <button className="link" onClick={() => navigate(`/crops/${c.id}/harvests`)}>{c.name}</button>
               </td>
-              <td>{c.variety}</td>
+              <td>{c.batchCode}</td>
+              <td>{c.predictedYield}</td>
+              <td>{c.numPlants}</td>
               <td>{c.plantingDate}</td>
               <td>{c.status}</td>
               <td>

@@ -3,8 +3,8 @@ import type { ReactNode } from 'react'
 
 export type Tunnel = { id: string; name: string }
 export type Plot = { id: string; name: string; tunnelId: string }
-export type Crop = { id: string; tunnelId: string; plotId: string; name: string; variety: string; plantingDate: string; status: 'Pending' | 'Planted' | 'Completed' }
-export type Harvest = { id: string; cropId: string; date: string; quantity: number; note?: string }
+export type Crop = { id: string; tunnelId: string; plotId: string; name: string; batchCode: string; plantingDate: string; predictedYield: number; numPlants: number; status: 'Pending' | 'Planted' | 'Completed' }
+export type Harvest = { id: string; cropId: string; date: string; quantity: number; numHarvestPlants: number; note?: string }
 
 type AppState = {
   tunnels: Tunnel[]
