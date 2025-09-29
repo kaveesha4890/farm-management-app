@@ -45,7 +45,15 @@ export function AddCropPage() {
         </div>
         <div className="field">
           <label className="label">Planting Date</label>
-          <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          <input 
+            className="input" 
+            type="date" 
+            value={date} 
+            onChange={(e) => setDate(e.target.value)}
+            min="2020-01-01"
+            max="2030-12-31"
+            title="Select planting date"
+          />
         </div>
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <button type="button" className="btn secondary" onClick={() => navigate('/crops')}>Back</button>

@@ -9,7 +9,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="brand">Farm Manager</div>
           <div className="nav">
             <Link to="/dashboard" className="btn small secondary">Dashboard</Link>
-            <Link to="/crops" className="btn small secondary">Crops</Link>
           </div>
         </div>
       </div>

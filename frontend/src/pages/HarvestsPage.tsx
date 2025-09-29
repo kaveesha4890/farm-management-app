@@ -1,13 +1,12 @@
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
 export function HarvestsPage() {
-  const { cropId } = useParams()
-  const { crops, harvests, markHarvestsCompleteForCrop } = useApp()
+  const { crops, harvests, selectedTunnelId, selectedPlotId, markHarvestsCompleteForCrop } = useApp()
   const navigate = useNavigate()
 
-  const crop = crops.find((c) => c.id === cropId)
-  const rows = harvests.filter((h) => h.cropId === cropId)
+  const crop = crops.find((c) => c.tunnelId === selectedTunnelId && c.plotId === selectedPlotId)
+  const rows = harvests.filter((h) => h.cropId === crop?.id)
 
   return (
     <div className="card">
@@ -40,7 +39,7 @@ export function HarvestsPage() {
       <div className="spacer" />
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <Link to="/crops" className="btn secondary">Back</Link>
-        <button className="btn" onClick={() => crop && (markHarvestsCompleteForCrop(crop.id), navigate('/crops'))} disabled={!crop}>Mark as complete</button>
+        <button className="btn" onClick={() => crop && markHarvestsCompleteForCrop(crop.id)} disabled={!crop}>Mark as complete</button>
       </div>
     </div>
   )

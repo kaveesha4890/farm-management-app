@@ -25,7 +25,15 @@ export function AddHarvestPage() {
       <form onSubmit={onAdd}>
         <div className="field">
           <label className="label">Harvest Date</label>
-          <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          <input 
+            className="input" 
+            type="date" 
+            value={date} 
+            onChange={(e) => setDate(e.target.value)}
+            min="2020-01-01"
+            max="2030-12-31"
+            title="Select harvest date"
+          />
         </div>
         <div className="field">
           <label className="label">Harvest Quantity</label>
