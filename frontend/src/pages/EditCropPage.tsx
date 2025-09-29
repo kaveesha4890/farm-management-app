@@ -35,6 +35,7 @@ export function EditCropPage() {
 
   function onSave(e: React.FormEvent) {
     e.preventDefault()
+    if (!crop) return
     updateCrop(crop.id, { name: type, variety, plantingDate: date })
     navigate('/crops')
   }
