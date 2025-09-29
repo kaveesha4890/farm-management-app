@@ -1,11 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
 export function HarvestsPage() {
-  const { crops, harvests, selectedTunnelId, selectedPlotId, markHarvestsCompleteForCrop } = useApp()
+  const { crops, harvests, markHarvestsCompleteForCrop } = useApp()
   const navigate = useNavigate()
+  const { cropId } = useParams()
 
-  const crop = crops.find((c) => c.tunnelId === selectedTunnelId && c.plotId === selectedPlotId)
+  const crop = crops.find((c) => c.id === cropId)
   const rows = harvests.filter((h) => h.cropId === crop?.id)
 
   return (
