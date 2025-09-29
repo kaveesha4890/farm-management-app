@@ -1,4 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Trash2, Pencil } from 'lucide-react';
+import 
+{ Link, useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
 export function CropDetailsPage() {
@@ -41,8 +43,8 @@ export function CropDetailsPage() {
               <td>{c.status}</td>
               <td>
                 <div className="row" style={{ gap: 8 }}>
-                  <button className="btn xsmall secondary" onClick={() => navigate(`/crops/${c.id}/edit`)}>Edit</button>
-                  <button className="btn xsmall danger" onClick={() => removeCrop(c.id)}>Remove</button>
+                  <button className="btn xsmall secondary" onClick={() => navigate(`/crops/${c.id}/edit`)}><Pencil size={20}/></button>
+                  <button className="btn xsmall danger" onClick={() => removeCrop(c.id)}><Trash2 size={20}/></button>
                 </div>
               </td>
             </tr>
