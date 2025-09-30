@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
@@ -17,7 +17,6 @@ export function EditCropPage() {
   const [numPlants, setNumPlants] = useState<number>(crop?.numPlants ?? 0)
   const [date, setDate] = useState(crop?.plantingDate ?? new Date().toISOString().slice(0, 10))
 
-  const varietyOptions = useMemo(() => [], [type])
 
   if (!crop) {
     return (
