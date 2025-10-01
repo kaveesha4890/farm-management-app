@@ -19,7 +19,16 @@ export function AddCropPage() {
   function onAdd(e: React.FormEvent) {
     e.preventDefault()
     if (!selectedTunnelId || !selectedPlotId) return
-    addCrop({ tunnelId: selectedTunnelId, plotId: selectedPlotId, name: type, batchCode, plantingDate: date, predictedYield, numPlants })
+    addCrop({ 
+      tunnelId: selectedTunnelId, 
+      plotId: selectedPlotId, 
+      name: type, 
+      batchCode, 
+      plantingDate: date, 
+      predictedYield, 
+      numPlants,
+      status: 'Planted' // Set status to 'Planted' so it appears in plot availability
+    })
     navigate('/crops')
   }
 

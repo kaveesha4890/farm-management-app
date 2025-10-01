@@ -35,7 +35,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [plots] = useState<Plot[]>([
     { id: 'p1', name: 'Plot 1', tunnelId: 't1' },
     { id: 'p2', name: 'Plot 2', tunnelId: 't1' },
-    { id: 'p3', name: 'Plot 1', tunnelId: 't2' },
+    { id: 'p3', name: 'Plot 3', tunnelId: 't1' },
+    { id: 'p4', name: 'Plot 1', tunnelId: 't2' },
+    { id: 'p5', name: 'Plot 2', tunnelId: 't2' },
   ])
   const [crops, setCrops] = useState<Crop[]>([])
   const [harvests, setHarvests] = useState<Harvest[]>([])

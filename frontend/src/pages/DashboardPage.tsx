@@ -40,7 +40,10 @@ export function DashboardPage() {
         </div>
       </div>
       <div className="spacer" />
-      <button className="btn" onClick={() => navigate('/crops')} disabled={!selectedTunnelId || !selectedPlotId}>Next</button>
+      <div className="row">
+        <button className="btn" onClick={() => navigate('/crops')} disabled={!selectedTunnelId || !selectedPlotId}>Next</button>
+        <button className="btn btn-secondary" onClick={() => navigate('/plot-availability')}>View Plot Availability</button>
+      </div>
     </div>
   )
 }

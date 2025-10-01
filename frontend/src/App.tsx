@@ -8,6 +8,7 @@ import { AddCropPage } from './pages/AddCropPage.tsx'
 import { HarvestsPage } from './pages/HarvestsPage.tsx'
 import { AddHarvestPage } from './pages/AddHarvestPage.tsx'
 import { EditCropPage } from './pages/EditCropPage.tsx'
+import { PlotAvailabilityPage } from './pages/PlotAvailabilityPage.tsx'
 import { AppProvider } from './state/AppContext.tsx'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/plot-availability" element={<PlotAvailabilityPage />} />
             <Route path="/crops" element={<CropDetailsPage />} />
             <Route path="/crops/new" element={<AddCropPage />} />
             <Route path="/crops/:cropId/harvests" element={<HarvestsPage />} />

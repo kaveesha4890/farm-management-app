@@ -16,6 +16,7 @@ export function EditCropPage() {
   const [predictedYield, setPredictedYield] = useState<number>(crop?.predictedYield ?? 0)
   const [numPlants, setNumPlants] = useState<number>(crop?.numPlants ?? 0)
   const [date, setDate] = useState(crop?.plantingDate ?? new Date().toISOString().slice(0, 10))
+  const [status, setStatus] = useState<'Pending' | 'Planted' | 'Completed'>(crop?.status ?? 'Planted')
 
 
   if (!crop) {
@@ -32,7 +33,7 @@ export function EditCropPage() {
   function onSave(e: React.FormEvent) {
     e.preventDefault()
     if (!crop) return
-    updateCrop(crop.id, { name: type, batchCode, predictedYield, numPlants, plantingDate: date })
+    updateCrop(crop.id, { name: type, batchCode, predictedYield, numPlants, plantingDate: date, status })
     navigate('/crops')
   }
 
@@ -63,6 +64,14 @@ export function EditCropPage() {
         <div className="field">
           <label className="label">Planting Date</label>
           <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        </div>
+        <div className="field">
+          <label className="label">Status</label>
+          <select className="select" value={status} onChange={(e) => setStatus(e.target.value as 'Pending' | 'Planted' | 'Completed')}>
+            <option value="Pending">Pending</option>
+            <option value="Planted">Planted</option>
+            <option value="Completed">Completed</option>
+          </select>
         </div>
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <button type="button" className="btn secondary" onClick={() => navigate('/crops')}>Back</button>
