@@ -4,7 +4,7 @@ import
 import { useApp } from '../state/AppContext'
 
 export function CropDetailsPage() {
-  const { tunnels, plots, selectedTunnelId, selectedPlotId, crops, removeCrop } = useApp()
+  const { tunnels, plots, selectedTunnelId, selectedPlotId, crops, harvests, removeCrop } = useApp()
   const navigate = useNavigate()
 
   const tunnelName = tunnels.find((t) => t.id === selectedTunnelId)?.name
@@ -26,6 +26,7 @@ export function CropDetailsPage() {
             <th>Batch code</th>
             <th>Predicted yield</th>
             <th>Number of plants</th>
+            <th>Total harvest</th>
             <th>Planting date</th>
             <th>Status</th>
             <th>Actions</th>
@@ -43,6 +44,7 @@ export function CropDetailsPage() {
               <td>{c.batchCode}</td>
               <td>{c.predictedYield}</td>
               <td>{c.numPlants}</td>
+              <td>{harvests.filter((h) => h.cropId === c.id).reduce((sum, h) => sum + h.quantity, 0)}</td>
               <td>{c.plantingDate}</td>
               <td>{c.status}</td>
               <td>
