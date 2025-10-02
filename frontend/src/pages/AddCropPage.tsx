@@ -2,7 +2,10 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
-const CROP_TYPES = ['Carrot', 'Tomato', 'Lettuce', 'Cabbage']
+const CROP_TYPES = [
+  'Carrot', 'Tomato', 'Lettuce', 'Cabbage', 'Beans', 'Cauliflower', 'Beetroot', 'Broccoli',
+  'Knokohol', 'Hot chilli', 'Green chilli', 'Capsicum', 'Kochchi', 'Radish', 
+]
 // Removed variety options; using batch code instead
 
 export function AddCropPage() {
