@@ -32,6 +32,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     { id: 't1', name: 'Tunnel GA1' },
     { id: 't2', name: 'Tunnel GA2' },
     { id: 't3', name: 'Tunnel GA3' },
+    {id: 't11', name: 'Tunnel GA4' },
     { id: 't4', name: 'Tunnel GB1' },
     { id: 't5', name: 'Tunnel GB2' },
     { id: 't6', name: 'Tunnel GB3' },
@@ -75,7 +76,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     { id: 'p30', name: 'Plot C2', tunnelId: 't3' },
     { id: 'p31', name: 'Plot D1', tunnelId: 't3' },
     { id: 'p32', name: 'Plot D2', tunnelId: 't3' },
-    { id: 'p21', name: 'Plot E1', tunnelId: 't3' },
+    { id: 'p33', name: 'Plot E1', tunnelId: 't3' },
     { id: 'p34', name: 'Plot E2', tunnelId: 't3' },
     { id: 'p35', name: 'Plot F1', tunnelId: 't3' },
     { id: 'p36', name: 'Plot F2', tunnelId: 't3' },
@@ -121,6 +122,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     { id: 'p69', name: 'Plot C', tunnelId: 't10' },
     { id: 'p70', name: 'Plot D', tunnelId: 't10' },
     { id: 'p71', name: 'Plot E', tunnelId: 't10' },
+
+    { id: 'p72', name: 'Plot A1', tunnelId: 't11' },
+    { id: 'p73', name: 'Plot A2', tunnelId: 't11' },
+    { id: 'p74', name: 'Plot B1', tunnelId: 't11' },
+    { id: 'p75', name: 'Plot B2', tunnelId: 't11' },
+    { id: 'p76', name: 'Plot C1', tunnelId: 't11' },
+    { id: 'p77', name: 'Plot C2', tunnelId: 't11' },
+    { id: 'p78', name: 'Plot D1', tunnelId: 't11' },
+    { id: 'p79', name: 'Plot D2', tunnelId: 't11' },
   ])
   const [crops, setCrops] = useState<Crop[]>([])
   const [harvests, setHarvests] = useState<Harvest[]>([])
