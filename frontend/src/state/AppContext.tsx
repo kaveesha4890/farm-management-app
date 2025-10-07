@@ -1,5 +1,15 @@
 import { createContext, useEffect, useContext, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
+import { db } from '../firebase';
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from 'firebase/firestore';
+
 
 export type Tunnel = { id: string; name: string }
 export type Plot = { id: string; name: string; tunnelId: string }
@@ -139,6 +149,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [crops, setCrops] = useState<Crop[]>([])
   const [harvests, setHarvests] = useState<Harvest[]>([])
 
+  useEffect(() => {
+    const unsubCrops = onSnapshot(collection(db, 'crops'), (snapshot) => {
+      const list: Crop[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Crop, 'id'>),
+      }));
+      setCrops(list);
+    });
+
+    const unsubHarvests = onSnapshot(collection(db, 'harvests'), (snapshot) => {
+      const list: Harvest[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Harvest, 'id'>),
+      }));
+      setHarvests(list);
+    });
+
+    return () => {
+      unsubCrops();
+      unsubHarvests();
+    };
+  }, []);
+
   const setSelectedTunnelId = (id?: string) => {
     setSelectedTunnelIdState(id)
     if (id) localStorage.setItem('selectedTunnelId', id)
@@ -157,36 +190,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, [selectedTunnelId])
 
-  const addCrop: AppState['addCrop'] = (crop) => {
-    setCrops((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        status: crop.status ?? 'Pending',
-        ...crop,
-      },
-    ])
-  }
+  const addCrop: AppState['addCrop'] = async (crop) => {
+    await addDoc(collection(db, 'crops'), {
+      status: crop.status ?? 'Pending',
+      ...crop,
+    });
+  };
 
-  const updateCrop: AppState['updateCrop'] = (cropId, changes) => {
-    setCrops((prev) => prev.map((c) => (c.id === cropId ? { ...c, ...changes } : c)))
-  }
+  const updateCrop: AppState['updateCrop'] = async (cropId, changes) => {
+    const ref = doc(db, 'crops', cropId);
+    await updateDoc(ref, changes);
+  };
 
-  const removeCrop: AppState['removeCrop'] = (cropId) => {
-    setCrops((prev) => prev.filter((c) => c.id !== cropId))
-    setHarvests((prev) => prev.filter((h) => h.cropId !== cropId))
-  }
+  const removeCrop: AppState['removeCrop'] = async (cropId) => {
+    await deleteDoc(doc(db, 'crops', cropId));
+    const harvestQuery = harvests.filter((h) => h.cropId === cropId);
+    for (const h of harvestQuery) {
+      await deleteDoc(doc(db, 'harvests', h.id));
+    }
+  };
 
-  const addHarvest: AppState['addHarvest'] = (hv) => {
-    setHarvests((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), ...hv },
-    ])
-  }
+  const addHarvest: AppState['addHarvest'] = async (hv) => {
+    await addDoc(collection(db, 'harvests'), hv);
+  };
 
-  const markHarvestsCompleteForCrop: AppState['markHarvestsCompleteForCrop'] = (cropId) => {
-    setCrops((prev) => prev.map((c) => (c.id === cropId ? { ...c, status: 'Completed' } : c)))
-  }
+  const markHarvestsCompleteForCrop: AppState['markHarvestsCompleteForCrop'] = async (cropId) => {
+    const ref = doc(db, 'crops', cropId);
+    await updateDoc(ref, { status: 'Completed' });
+  };
 
   const value = useMemo<AppState>(() => ({
     tunnels,
