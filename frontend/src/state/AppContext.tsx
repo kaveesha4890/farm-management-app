@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useEffect, useContext, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 export type Tunnel = { id: string; name: string }
@@ -25,8 +25,12 @@ type AppState = {
 const AppContext = createContext<AppState | null>(null)
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [selectedTunnelId, setSelectedTunnelId] = useState<string | undefined>()
-  const [selectedPlotId, setSelectedPlotId] = useState<string | undefined>()
+  const [selectedTunnelId, setSelectedTunnelIdState] = useState<string | undefined>(() => {
+    return localStorage.getItem('selectedTunnelId') || undefined
+  })
+  const [selectedPlotId, setSelectedPlotIdState] = useState<string | undefined>(() => {
+    return localStorage.getItem('selectedPlotId') || undefined
+  })
 
   const [tunnels] = useState<Tunnel[]>([
     { id: 't1', name: 'Tunnel GA1' },
@@ -134,6 +138,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
   ])
   const [crops, setCrops] = useState<Crop[]>([])
   const [harvests, setHarvests] = useState<Harvest[]>([])
+
+  const setSelectedTunnelId = (id?: string) => {
+    setSelectedTunnelIdState(id)
+    if (id) localStorage.setItem('selectedTunnelId', id)
+    else localStorage.removeItem('selectedTunnelId')
+  }
+
+  const setSelectedPlotId = (id?: string) => {
+    setSelectedPlotIdState(id)
+    if (id) localStorage.setItem('selectedPlotId', id)
+    else localStorage.removeItem('selectedPlotId')
+  }
+
+  useEffect(() => {
+    if (selectedPlotId && plots.find((p) => p.id === selectedPlotId)?.tunnelId !== selectedTunnelId) {
+      setSelectedPlotId(undefined)
+    }
+  }, [selectedTunnelId])
 
   const addCrop: AppState['addCrop'] = (crop) => {
     setCrops((prev) => [
