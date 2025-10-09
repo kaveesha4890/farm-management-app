@@ -1,5 +1,7 @@
 import { useApp } from '../state/AppContext';
 import { useState } from 'react';
+import * as XLSX from "xlsx";
+import { saveAs} from "file-saver";
 
 export default function ReportsPage() {
   const { tunnels, plots, crops, harvests } = useApp();
@@ -33,6 +35,18 @@ export default function ReportsPage() {
     const cropMatch = selectedCrop ? r.cropName === selectedCrop : true;
     return tunnelMatch && cropMatch;
   });
+
+  const exportToExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(filteredRows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Report");
+  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([excelBuffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+  saveAs(blob, "Farm_Report.xlsx");
+};
+
 
   return (
     <div className="container">
@@ -86,6 +100,14 @@ export default function ReportsPage() {
   </div>
 </div>
 
+      <button
+        onClick={exportToExcel}
+        className="btn"
+        style={{ marginBottom: '16px' }}
+      >
+        Export to Excel
+      </button>
+
       <div className="table-container card">
         <table className="table">
           <thead>
@@ -136,6 +158,7 @@ export default function ReportsPage() {
           </tbody>
         </table>
       </div>
+
     </div>
   );
 }
