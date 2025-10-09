@@ -43,6 +43,7 @@ export function DashboardPage() {
       <div className="row">
         <button className="btn" onClick={() => navigate('/crops')} disabled={!selectedTunnelId || !selectedPlotId}>Next</button>
         <button className="btn secondary" onClick={() => navigate('/plot-availability')}>View Plot Availability</button>
+         <button onClick={() => navigate('/reports')} className="btn secondary"> View All Records </button>
       </div>
     </div>
   )

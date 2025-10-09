@@ -94,6 +94,11 @@ a { color: inherit; text-decoration: none; }
   color: white; 
 }
 
+.status-badge.planted { 
+  background: #91ad15; 
+  color: white; 
+}
+
 .status-badge.occupied { 
   background: #f03f20; 
   color: white; 
