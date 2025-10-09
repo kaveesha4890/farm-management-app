@@ -1,7 +1,12 @@
 import { useApp } from '../state/AppContext';
+import { useState } from 'react';
 
 export default function ReportsPage() {
   const { tunnels, plots, crops, harvests } = useApp();
+
+  //Filter states
+  const [selectedTunnel, setSelectedTunnel] = useState("");
+  const [selectedCrop, setSelectedCrop] = useState("");
 
   // Combine data
   const rows = crops.map((crop) => {
@@ -23,10 +28,63 @@ export default function ReportsPage() {
     };
   });
 
+  const filteredRows = rows.filter((r)=>{
+    const tunnelMatch = selectedTunnel ? r.tunnel === selectedTunnel : true;
+    const cropMatch = selectedCrop ? r.cropName === selectedCrop : true;
+    return tunnelMatch && cropMatch;
+  });
+
   return (
     <div className="container">
       <h1 className="page-title">All Records Report</h1>
       <p className="text-muted">A summary of all tunnels, plots, and crop performance.</p>
+
+<div className="filters-row row" style={{ marginBottom: '16px' }}>
+  {/* Tunnel Filter */}
+  <div className="col">
+    <select
+      value={selectedTunnel}
+      onChange={(e) => setSelectedTunnel(e.target.value)}
+      className="select"
+    >
+      <option value="">All Tunnels</option>
+      {tunnels.map((t) => (
+        <option key={t.id} value={t.name}>
+          {t.name}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Crop Filter */}
+  <div className="col">
+    <select
+      value={selectedCrop}
+      onChange={(e) => setSelectedCrop(e.target.value)}
+      className="select"
+    >
+      <option value="">All Crops</option>
+      {crops.map((c) => (
+        <option key={c.id} value={c.name}>
+          {c.name}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Reset Button */}
+  <div className="col" style={{ flex: '0 0 auto' }}>
+    <button
+      onClick={() => {
+        setSelectedTunnel('');
+        setSelectedCrop('');
+      }}
+      className="btn secondary"
+    >
+      Reset Filters
+    </button>
+  </div>
+</div>
 
       <div className="table-container card">
         <table className="table">
@@ -43,8 +101,8 @@ export default function ReportsPage() {
             </tr>
           </thead>
           <tbody>
-            {rows.length > 0 ? (
-              rows.map((r, i) => (
+            {filteredRows.length > 0 ? (
+              filteredRows.map((r, i) => (
                 <tr key={i}>
                   <td>{r.tunnel}</td>
                   <td>{r.plot}</td>

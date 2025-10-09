@@ -108,3 +108,37 @@ a { color: inherit; text-decoration: none; }
   color: #a9b0bb; 
   margin-bottom: 16px; 
 }
+
+/* Filter row styling */
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+/* Select dropdown styling override for better appearance */
+.select {
+  background: #161a1f;
+  border: 1px solid #2a2f36;
+  border-radius: 6px;
+  color: #e8e8e8;
+  padding: 8px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 160px;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #1fa040;
+  box-shadow: 0 0 0 2px rgba(31, 160, 64, 0.3);
+}
+
+/* Button refinement for alignment */
+.filters-row .btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
