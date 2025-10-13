@@ -35,9 +35,31 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-tunnel:hover { 
   background: #3a3f46; 
-  border-color: #1fa040; 
+  border-color: #3a3f46; 
   transform: translateY(-2px);
 }
+
+.tunnel-green {
+  background-color: #28a745;
+}
+.tunnel-green:hover {
+  background-color: #218838;
+}
+
+.tunnel-orange {
+  background-color: #fd7e14;
+}
+.tunnel-orange:hover {
+  background-color: #e96a00;
+}
+
+.tunnel-red {
+  background-color: #dc3545;
+}
+.tunnel-red:hover {
+  background-color: #b52a38;
+}
+
 .btn:disabled { opacity: .6; cursor: not-allowed; }
 
 .input, .select, .textarea { width: 100%; padding: 8px 10px; background: #0f1114; border: 1px solid #2a2f36; border-radius: 6px; color: #e8e8e8; }

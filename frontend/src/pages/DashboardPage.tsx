@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
+import { PlotAvailabilityPage } from './PlotAvailabilityPage'
 
 export function DashboardPage() {
   const { tunnels, plots, selectedTunnelId, selectedPlotId, setSelectedTunnelId, setSelectedPlotId } = useApp()
@@ -17,8 +18,11 @@ export function DashboardPage() {
   const filteredPlots = plots.filter((p) => !selectedTunnelId || p.tunnelId === selectedTunnelId)
 
   return (
-    <div className="card">
-      <div className="page-title">Dashboard</div>
+    <>
+      <PlotAvailabilityPage/>
+      <div className="spacer" />
+      <div className="card">
+      <div className="page-title">Add Crops and Harvests</div>
       <div className="row">
         <div className="col">
           <label className="label">Select Tunnel</label>
@@ -42,10 +46,10 @@ export function DashboardPage() {
       <div className="spacer" />
       <div className="row">
         <button className="btn" onClick={() => navigate('/crops')} disabled={!selectedTunnelId || !selectedPlotId}>Next</button>
-        <button className="btn secondary" onClick={() => navigate('/plot-availability')}>View Plot Availability</button>
-         <button onClick={() => navigate('/reports')} className="btn secondary"> View All Records </button>
       </div>
-    </div>
+      </div>
+
+    </>
   )
 }
 

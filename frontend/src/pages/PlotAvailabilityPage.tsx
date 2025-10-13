@@ -1,14 +1,40 @@
 import { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
 
 export function PlotAvailabilityPage() {
   const { tunnels, plots, crops, harvests } = useApp()
-  const navigate = useNavigate()
   const [selectedTunnelId, setSelectedTunnelId] = useState<string | null>(null)
 
   const selectedTunnel = tunnels.find(t => t.id === selectedTunnelId)
   const tunnelPlots = plots.filter(p => p.tunnelId === selectedTunnelId)
+
+  const getTunnelFillPercentage = (tunnelId: string) => {
+  const tunnelCrops = crops.filter(crop => crop.tunnelId === tunnelId)
+
+  if (tunnelCrops.length === 0) return 0
+
+  let totalPlanted = 0
+  let totalCurrent = 0
+
+  tunnelCrops.forEach(crop => {
+    const cropHarvests = harvests.filter(h => h.cropId === crop.id)
+    const harvested = cropHarvests.reduce((sum, h) => sum + h.numHarvestPlants, 0)
+    const current = Math.max(0, crop.numPlants - harvested)
+
+    totalPlanted += crop.numPlants
+    totalCurrent += current
+  })
+
+    if (totalPlanted === 0) return 0
+     return (totalCurrent / totalPlanted) * 100
+  }
+
+  const getTunnelColor = (percentage: number) => {
+    if (percentage >= 90) return 'tunnel-green'
+    if (percentage >= 60) return 'tunnel-orange'
+    return 'tunnel-red'
+  }
+
 
   // Get plot details with crop information - using useMemo to ensure recalculation when data changes
   const plotDetails = useMemo(() => {
@@ -66,9 +92,6 @@ export function PlotAvailabilityPage() {
     setSelectedTunnelId(tunnelId)
   }
 
-  const handleBackToDashboard = () => {
-    navigate('/dashboard')
-  }
 
   return (
     <div className="card">
@@ -78,16 +101,23 @@ export function PlotAvailabilityPage() {
         <div>
           <p className="text-muted">Select a tunnel to view plot availability:</p>
           <div className="tunnel-grid">
-            {tunnels.map(tunnel => (
-              <button
-                key={tunnel.id}
-                className="btn btn-tunnel"
-                onClick={() => handleTunnelSelect(tunnel.id)}
-              >
-                {tunnel.name}
-              </button>
-            ))}
+            {tunnels.map(tunnel => {
+              const percentage = getTunnelFillPercentage(tunnel.id)
+              const colorClass = getTunnelColor(percentage)
+
+              return (
+                <button
+                  key={tunnel.id}
+                  className={`btn btn-tunnel ${colorClass}`}
+                  onClick={() => handleTunnelSelect(tunnel.id)}
+                  title={`Current fill: ${percentage.toFixed(1)}%`}
+                >
+                  {tunnel.name} ({percentage.toFixed(0)}%)
+                </button>
+              )
+            })}
           </div>
+
         </div>
       ) : (
         <div>
@@ -146,19 +176,7 @@ export function PlotAvailabilityPage() {
       )}
       
       <div className="spacer" />
-      <div className="row" style={{ justifyContent: 'space-between' }}>
-        <button className="btn btn-secondary" onClick={handleBackToDashboard}>
-          Back to Dashboard
-        </button>
-        {selectedTunnelId && (
-          <button 
-            className="btn" 
-            onClick={() => navigate('/dashboard')}
-          >
-            Add New Crop
-          </button>
-        )}
-      </div>
+      
     </div>
   )
 }
