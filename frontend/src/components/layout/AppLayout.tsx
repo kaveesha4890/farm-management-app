@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { LogoutButton } from '../LogoutButton'
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
@@ -9,7 +10,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <div className="brand">Farm Manager</div>
           <div className="nav">
             <Link to="/dashboard" className="btn small secondary">Dashboard</Link>
-            <Link to="/reports" className="btn small ">View all Records</Link>
+            <Link to="/reports" className="btn small ">Records</Link>
+            <LogoutButton />
           </div>
         </div>
       </div>
