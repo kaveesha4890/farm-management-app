@@ -9,12 +9,13 @@ import {
   doc,
   onSnapshot,
 } from 'firebase/firestore';
+import {useAuth} from './AuthContext'
 
 
 export type Tunnel = { id: string; name: string }
 export type Plot = { id: string; name: string; tunnelId: string }
-export type Crop = { id: string; tunnelId: string; plotId: string; name: string; batchCode: string; plantingDate: string; predictedYield: number; numPlants: number; status: 'Pending' | 'Planted' | 'Completed' }
-export type Harvest = { id: string; cropId: string; date: string; quantity: number; numHarvestPlants: number; note?: string }
+export type Crop = { id: string; tunnelId: string; plotId: string; name: string; batchCode: string; plantingDate: string; predictedYield: number; numPlants: number; status: 'Pending' | 'Planted' | 'Completed'; createdBy?: string }
+export type Harvest = { id: string; cropId: string; date: string; quantity: number; numHarvestPlants: number; note?: string; createdBy?: string }
 
 type AppState = {
   tunnels: Tunnel[]
@@ -35,6 +36,7 @@ type AppState = {
 const AppContext = createContext<AppState | null>(null)
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const {user} = useAuth()
   const [selectedTunnelId, setSelectedTunnelIdState] = useState<string | undefined>(() => {
     return localStorage.getItem('selectedTunnelId') || undefined
   })
@@ -191,9 +193,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [selectedTunnelId])
 
   const addCrop: AppState['addCrop'] = async (crop) => {
+    if(!user?.email){
+      console.warn("User not logged in - can not add crop")
+      return
+    }
+
     await addDoc(collection(db, 'crops'), {
       status: crop.status ?? 'Pending',
       ...crop,
+      createdBy: user.email,
     });
   };
 
@@ -211,7 +219,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const addHarvest: AppState['addHarvest'] = async (hv) => {
-    await addDoc(collection(db, 'harvests'), hv);
+    if(!user?.email) {
+      console.warn("User not logged in - can not add harvest")
+      return
+    }
+
+    await addDoc(collection(db, 'harvests'), {
+      ...hv,
+      createdBy: user.email,
+    });
   };
 
   const markHarvestsCompleteForCrop: AppState['markHarvestsCompleteForCrop'] = async (cropId) => {
@@ -233,7 +249,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     removeCrop,
     addHarvest,
     markHarvestsCompleteForCrop,
-  }), [tunnels, plots, crops, harvests, selectedTunnelId, selectedPlotId])
+  }), [tunnels, plots, crops, harvests, selectedTunnelId, selectedPlotId, user])
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
