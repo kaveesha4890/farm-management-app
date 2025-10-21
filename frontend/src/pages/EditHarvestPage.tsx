@@ -24,12 +24,17 @@ export function EditHarvestPage() {
     )
   }
 
-  async function onSave(e: React.FormEvent) {
-    e.preventDefault()
-    await updateHarvest(harvest.id, { date, quantity, numHarvestPlants, note })
-    navigate(`/crops/${cropId}/harvests`)
-  }
-
+  const onSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await updateHarvest(harvest.id, {
+      date,
+      quantity: Number(quantity),
+      numHarvestPlants: Number(numHarvestPlants),
+      note: note || undefined,
+    });
+    navigate(`/crops/${harvest.cropId}/harvests`);
+  };
+  
   return (
     <div className="card" style={{ maxWidth: 560, margin: '0 auto' }}>
       <div className="page-title">Edit Harvest</div>
