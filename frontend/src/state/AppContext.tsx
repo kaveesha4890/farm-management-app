@@ -30,6 +30,8 @@ type AppState = {
   updateCrop: (cropId: string, changes: Partial<Omit<Crop, 'id'>>) => void
   removeCrop: (cropId: string) => void
   addHarvest: (hv: Omit<Harvest, 'id'>) => void
+  updateHarvest: (harvestId: string, changes: Partial<Omit<Harvest, 'id'>>) => void
+  removeHarvest: (harvestId: string) => void
   markHarvestsCompleteForCrop: (cropId: string) => void
 }
 
@@ -230,6 +232,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const updateHarvest: AppState['updateHarvest'] = async (harvestId, changes) =>{
+    const ref = doc(db, 'harvests', harvestId)
+    await updateDoc(ref, changes)
+  }
+
+  const removeHarvest: AppState['removeHarvest'] = async (harvestId) => {
+    await deleteDoc(doc(db,'harvests', harvestId))
+  }
+
   const markHarvestsCompleteForCrop: AppState['markHarvestsCompleteForCrop'] = async (cropId) => {
     const ref = doc(db, 'crops', cropId);
     await updateDoc(ref, { status: 'Completed' });
@@ -248,6 +259,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     updateCrop,
     removeCrop,
     addHarvest,
+    updateHarvest,
+    removeHarvest,
     markHarvestsCompleteForCrop,
   }), [tunnels, plots, crops, harvests, selectedTunnelId, selectedPlotId, user])
 

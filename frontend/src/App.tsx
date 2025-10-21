@@ -13,6 +13,7 @@ import { AppProvider } from './state/AppContext.tsx'
 import ReportsPage from './pages/ReportsPage.tsx'
 import { AuthProvider, useAuth } from './state/AuthContext.tsx'
 import type { JSX } from 'react'
+import { EditHarvestPage } from './pages/EditHarvestPage.tsx'
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user, loading } = useAuth();
@@ -113,6 +114,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ReportsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/crops/:cropId/harvests/:harvestId/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditHarvestPage/>
                   </ProtectedRoute>
                 }
               />

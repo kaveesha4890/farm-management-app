@@ -1,8 +1,9 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useApp } from '../state/AppContext'
+import {Pencil, Trash2} from 'lucide-react'
 
 export function HarvestsPage() {
-  const { crops, harvests, markHarvestsCompleteForCrop } = useApp()
+  const { crops, harvests, markHarvestsCompleteForCrop, removeHarvest } = useApp()
   const navigate = useNavigate()
   const { cropId } = useParams()
 
@@ -23,6 +24,7 @@ export function HarvestsPage() {
             <th>Quantity</th>
             <th>Number of harvest plants</th>
             <th>Note</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +37,22 @@ export function HarvestsPage() {
               <td>{h.quantity}</td>
               <td>{h.numHarvestPlants}</td>
               <td>{h.note ?? '-'}</td>
+              <td>
+                <div className="row" style={{ gap: 8 }}>
+                  <button 
+                    className="btn xsmall secondary"
+                    onClick={() => navigate(`/crops/${crop?.id}/harvests/${h.id}/edit`)}
+                  >
+                    <Pencil size={20} />
+                  </button>
+                  <button 
+                    className="btn xsmall danger"
+                    onClick={() => removeHarvest(h.id)}
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
