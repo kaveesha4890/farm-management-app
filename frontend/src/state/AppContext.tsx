@@ -8,6 +8,9 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
+  serverTimestamp,
+  query,
+  orderBy
 } from 'firebase/firestore';
 import {useAuth} from './AuthContext'
 
@@ -154,7 +157,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [harvests, setHarvests] = useState<Harvest[]>([])
 
   useEffect(() => {
-    const unsubCrops = onSnapshot(collection(db, 'crops'), (snapshot) => {
+    const unsubCrops = onSnapshot(query(collection(db, 'crops'), orderBy('createdAt', 'desc')), (snapshot) => {
       const list: Crop[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...(doc.data() as Omit<Crop, 'id'>),
@@ -204,6 +207,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       status: crop.status ?? 'Pending',
       ...crop,
       createdBy: user.email,
+      createdAt: serverTimestamp()
     });
   };
 
