@@ -21,7 +21,7 @@ export function HarvestsPage() {
         <thead>
           <tr>
             <th>Harvest date</th>
-            <th>Quantity</th>
+            <th>Quantity(kg)</th>
             <th>Number of harvest plants</th>
             <th>Note</th>
             <th>Actions</th>

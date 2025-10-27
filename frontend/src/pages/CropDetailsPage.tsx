@@ -24,9 +24,9 @@ export function CropDetailsPage() {
           <tr>
             <th>Crop</th>
             <th>Batch code</th>
-            <th>Predicted yield</th>
+            <th>Predicted yield(kg)</th>
             <th>Number of plants</th>
-            <th>Total harvest</th>
+            <th>Total harvest(kg)</th>
             <th>Planting date</th>
             <th>Status</th>
             <th>Actions</th>
