@@ -14,7 +14,7 @@ export function HarvestsPage() {
     <div className="card">
       <div className="row" style={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <div className="page-title">Harvests {crop ? `- ${crop.name}` : ''}</div>
-        <button className="btn small" onClick={() => navigate(`/crops/${crop?.id}/harvests/new`)} disabled={!crop}>Add Harvest</button>
+        <button className="btn small" onClick={() => navigate(`/crops/${crop?.id}/harvests/new`)} disabled={!crop || crop?.status === 'Completed'}>Add Harvest</button>
       </div>
       <div className="spacer" />
       <table className="table">
@@ -60,7 +60,7 @@ export function HarvestsPage() {
       <div className="spacer" />
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <Link to="/crops" className="btn secondary">Back</Link>
-        <button className="btn" onClick={() => crop && markHarvestsCompleteForCrop(crop.id)} disabled={!crop}>Mark as complete</button>
+        <button className={`btn ${crop?.status === 'Completed' ? 'secondary' : ''}`} onClick={() => crop && markHarvestsCompleteForCrop(crop.id)} disabled={!crop || crop.status === 'Completed'}>{crop?.status === 'Completed'? "Mark as completed":"Mark as complete"}</button>
       </div>
     </div>
   )
