@@ -19,7 +19,8 @@ export function CropDetailsPage() {
         <button className="btn small" onClick={() => navigate('/crops/new')}>Add new crop</button>
       </div>
       <div className="spacer" />
-      <table className="table">
+      <div className='table-container'>
+        <table className="table">
         <thead>
           <tr>
             <th>Crop</th>
@@ -57,6 +58,7 @@ export function CropDetailsPage() {
           ))}
         </tbody>
       </table>
+      </div>
       <div className="spacer" />
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <Link to="/dashboard" className="btn secondary">Back</Link>

@@ -17,7 +17,8 @@ export function HarvestsPage() {
         <button className="btn small" onClick={() => navigate(`/crops/${crop?.id}/harvests/new`)} disabled={!crop || crop?.status === 'Completed'}>Add Harvest</button>
       </div>
       <div className="spacer" />
-      <table className="table">
+      <div className='table-container'>
+        <table className="table">
         <thead>
           <tr>
             <th>Harvest date</th>
@@ -57,6 +58,7 @@ export function HarvestsPage() {
           ))}
         </tbody>
       </table>
+      </div>
       <div className="spacer" />
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <Link to="/crops" className="btn secondary">Back</Link>
